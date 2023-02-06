@@ -1,11 +1,20 @@
 #!/bin/bash
 # Author: @certainly1182
 # Description: Checks for updates to Velocity and downloads them if available
-
+dependencies=(jq curl unzip tmux)
 # Define the API URL
 apiURL="https://papermc.io/api/v2/projects/velocity"
 # Name of the tmux session where Geyser is running
 tmuxSession='velocity'
+
+checkDependencies() {
+    for command in "${dependencies[@]}"; do
+        if ! command -v "$command" &> /dev/null; then
+            echo "$command is not installed, please install it before running this script."
+            exit 1
+        fi
+    done
+}
 
 getLocalBuild() {
     localBuild=$(unzip -p "velocity-3.2.0-SNAPSHOT-220.jar" META-INF/MANIFEST.MF | grep "Implementation-Version" | grep -o 'b[0-9]\{3\}' | awk -F'b' '{print $2}')
