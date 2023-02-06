@@ -10,15 +10,16 @@ tmuxSession='velocity'
 getLocalBuild() {
     localBuild=$(unzip -p "velocity-3.2.0-SNAPSHOT-220.jar" META-INF/MANIFEST.MF | grep "Implementation-Version" | grep -o 'b[0-9]\{3\}' | awk -F'b' '{print $2}')
 }
+
 checkForUpdates() {
     # Check the lastest version and build
     latestVersion=$(curl -s "$apiURL" | jq '.versions[-1]')
     latestBuild=$(curl -s "$apiURL/versions/$latestVersion" | jq '.builds[-1]')
     # Check if the current version is up to date
-    currentChecksum=$(sha256sum velocity-*.jar | awk '{print $1}')
+    localChecksum=$(sha256sum velocity-*.jar | awk '{print $1}')
     latestChecksum=$(curl -s "$apiURL/versions/$latestVersion/builds/$latestBuild" | jq '.downloads.application.sha256' -r)
     
-    if [ "$currentChecksum" == "$latestChecksum" ]; then
+    if [ "$localChecksum" == "$latestChecksum" ]; then
         echo "No update available, you have the latest build ($latestBuild)"
         exit 0
     else
@@ -57,8 +58,8 @@ downloadVelocity() {
 
     # Download the latest version
     echo "Downloading Velocity $velocityDownloadURL -> $latestDownload..."
-    echo "> curl --progress -s -o $latestDownload $velocityDownloadURL"
-    curl --progress -s -o "$latestDownload" "$velocityDownloadURL"
+    echo "> curl --progress $velocityDownloadURL -o $latestDownload "
+    curl --progress "$velocityDownloadURL" -o "$latestDownload"
     if [ $? -ne 0 ]; then
         echo "Failed to download Velocity"
         exit 1
@@ -75,6 +76,7 @@ startVelocity() {
     tmux new-session -d -s $tmuxSession 'sh start.sh'
 }
 
+getLocalBuild
 checkForUpdates
 confirmUpdate
 stopVelocity
