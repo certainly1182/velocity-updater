@@ -16,7 +16,7 @@ Please make sure these dependencies are installed before running the script.
 ## What it does
 1. Checks if all required dependencies are installed.
 2. Retrieves the version and build number of the local Velocity installation.
-3. Checks for updates to Velocity on the official server.
+3. Checks for updates to Velocity using the papermc API.
 4. Prompts the user to confirm the update.
 5. Stops the Velocity server if it is running.
 6. Archives the old version of Velocity.
