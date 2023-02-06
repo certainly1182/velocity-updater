@@ -2,15 +2,16 @@
 This script checks for updates to the [Velocity](https://velocitypowered.com) server proxy jar and downloads them if available.
 
 ## Prerequisites
-- `jq`
-- `curl`
-- `unzip`
-- `tmux`
+- jq
+- curl
+- unzip
+- tmux
 
 Please make sure these dependencies are installed before running the script.
 
 ## Usage
 - Clone this repository and navigate to the directory where the script is located.
+- Make it executable using `chmod +x update.sh`.
 - Run the script using `./update.sh`.
 ## What it does
 1. Checks if all required dependencies are installed.
