@@ -85,6 +85,7 @@ startVelocity() {
     tmux new-session -d -s $tmuxSession 'sh start.sh'
 }
 
+checkDependencies
 getLocalBuild
 checkForUpdates
 confirmUpdate
